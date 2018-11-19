@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dxc.openShopReport.dao.ShopMapper">
+  <resultMap id="BaseResultMap" type="com.dxc.openShopReport.model.Shop">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="shopId" jdbcType="INTEGER" property="shopid" />
+    <result column="shopName" jdbcType="VARCHAR" property="shopname" />
+    <result column="shopCode" jdbcType="VARCHAR" property="shopcode" />
+    <result column="shopBrand" jdbcType="VARCHAR" property="shopbrand" />
+    <result column="shopContent" jdbcType="CHAR" property="shopcontent" />
+    <result column="shopVersion" jdbcType="VARCHAR" property="shopversion" />
+    <result column="shopDate" jdbcType="TIMESTAMP" property="shopdate" />
+  </resultMap>
+
+  <resultMap id="getShopProfile" type="com.dxc.openShopReport.model.Shop">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="shopName" jdbcType="VARCHAR" property="shopname" />
+    <result column="shopCode" jdbcType="VARCHAR" property="shopcode" />
+  </resultMap>
+
+  <select id="getRecordCountById" resultType="java.util.HashMap">
+    select shopContent,shopId,count(*) from shop where shopCode=#{shopCode} group by shopContent,shopId
+  </select>
+
+  <insert id="addNewRecords">
+    insert into shop(shopName,shopCode,shopBrand,shopContent,shopVersion,shopDate) values(#{shopname},#{shopcode},#{shopbrand},#{shopcontent},#{shopversion},now())
+  </insert>
+
+  <select id="getModuleValue" resultType="java.lang.String">
+    select shopContent from shop where shopCode=#{shopcode}
+  </select>
+
+  <select id="getAllShop" resultType="java.util.HashMap">
+    select shopName,shopCode from shop
+    <where>
+      <if test="brand!=null">
+        and shopBrand = #{brand}
+      </if>
+    </where>
+  </select>
+</mapper>
